@@ -4,10 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import ru.silantevdr.noteappmvvm.screens.Add
-import ru.silantevdr.noteappmvvm.screens.Main
-import ru.silantevdr.noteappmvvm.screens.Note
-import ru.silantevdr.noteappmvvm.screens.Start
+import ru.silantevdr.noteappmvvm.screens.AddScreen
+import ru.silantevdr.noteappmvvm.screens.MainScreen
+import ru.silantevdr.noteappmvvm.screens.NoteScreen
+import ru.silantevdr.noteappmvvm.screens.StartScreen
 
 sealed class NavRoute(val route: String) {
     object Start: NavRoute("start_screen")
@@ -21,9 +21,9 @@ fun NotesNavHost() {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = NavRoute.Start.route) {
-        composable(NavRoute.Start.route) { Start(navController = navController) }
-        composable(NavRoute.Main.route) { Main(navController = navController) }
-        composable(NavRoute.Add.route) { Add(navController = navController) }
-        composable(NavRoute.Note.route) { Note(navController = navController) }
+        composable(NavRoute.Start.route) { StartScreen(navController = navController) }
+        composable(NavRoute.Main.route) { MainScreen(navController = navController) }
+        composable(NavRoute.Add.route) { AddScreen(navController = navController) }
+        composable(NavRoute.Note.route) { NoteScreen(navController = navController) }
     }
 }
