@@ -7,10 +7,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import ru.silantevdr.noteappmvvm.model.Note
+import ru.silantevdr.noteappmvvm.utils.Constants.Keys.NOTES_TABLE
 
 @Dao
 interface NoteRoomDao {
-    @Query("SELECT * FROM notes_table")
+    @Query("SELECT * FROM $NOTES_TABLE")
     fun getAllNotes(): LiveData<List<Note>>
 
     @Insert

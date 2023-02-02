@@ -9,7 +9,6 @@ import ru.silantevdr.noteappmvvm.database.room.AppRoomDatabase
 import ru.silantevdr.noteappmvvm.database.room.repository.RoomRepository
 import ru.silantevdr.noteappmvvm.model.Note
 import ru.silantevdr.noteappmvvm.utils.REPOSITORY
-import ru.silantevdr.noteappmvvm.utils.TYPE_FIREBASE
 import ru.silantevdr.noteappmvvm.utils.TYPE_ROOM
 
 class MainViewModel(application: Application): AndroidViewModel(application) {
@@ -38,6 +37,26 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
     }
 
     fun readAllNotes() = REPOSITORY.readAll
+
+    fun updateNote (note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.update(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun deleteNote (note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.delete(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
 
 }
 
