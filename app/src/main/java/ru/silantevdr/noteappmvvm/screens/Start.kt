@@ -18,12 +18,11 @@ import ru.silantevdr.noteappmvvm.MainViewModel
 import ru.silantevdr.noteappmvvm.MainViewModelFactory
 import ru.silantevdr.noteappmvvm.navigation.NavRoute
 import ru.silantevdr.noteappmvvm.ui.theme.NoteAppMVVMTheme
-import ru.silantevdr.noteappmvvm.utils.TYPE_DATABASE
 import ru.silantevdr.noteappmvvm.utils.TYPE_FIREBASE
 import ru.silantevdr.noteappmvvm.utils.TYPE_ROOM
 
 @Composable
-fun StartScreen(navController: NavHostController) {
+fun StartScreen(navController: NavHostController, viewModel: MainViewModel) {
     val context = LocalContext.current
     val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
 
@@ -68,6 +67,9 @@ fun StartScreen(navController: NavHostController) {
 @Composable
 fun prevStartScreen() {
     NoteAppMVVMTheme {
-        StartScreen(navController = rememberNavController())
+        val context = LocalContext.current
+        val mViewModel: MainViewModel = viewModel(factory = MainViewModelFactory(context.applicationContext as Application))
+
+        StartScreen(navController = rememberNavController(), viewModel = mViewModel)
     }
 }

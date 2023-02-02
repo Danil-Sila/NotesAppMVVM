@@ -2,10 +2,9 @@ package ru.silantevdr.noteappmvvm
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.silantevdr.noteappmvvm.database.room.AppRoomDatabase
 import ru.silantevdr.noteappmvvm.database.room.repository.RoomRepository
 import ru.silantevdr.noteappmvvm.model.Note
@@ -27,6 +26,19 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
             }
         }
     }
+
+    fun addNote(note: Note, onSuccess: () -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            REPOSITORY.create(note = note) {
+                viewModelScope.launch(Dispatchers.Main) {
+                    onSuccess()
+                }
+            }
+        }
+    }
+
+    fun readAllNotes() = REPOSITORY.readAll
+
 }
 
 class MainViewModelFactory(private val application: Application): ViewModelProvider.Factory {
