@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1039353644398",
+    "project_id": "notesapp-b030b",
+    "storage_bucket": "notesapp-b030b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1039353644398:android:ce6a78240f24437cf0ad7f",
+        "android_client_info": {
+          "package_name": "ru.silantevdr.noteappmvvm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1039353644398-qqiemmmq5ga8shf9j8vj373tf52g6keg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_AF8yeWd4zWWI4_a9psbsWcTUatoQ5xo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1039353644398-qqiemmmq5ga8shf9j8vj373tf52g6keg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
