@@ -33,12 +33,23 @@ import ru.silantevdr.noteappmvvm.utils.Constants.Keys.SUBTITLE
 import ru.silantevdr.noteappmvvm.utils.Constants.Keys.TITLE
 import ru.silantevdr.noteappmvvm.utils.Constants.Keys.UPDATE
 import ru.silantevdr.noteappmvvm.utils.Constants.Keys.UPDATE_NOTE
+import ru.silantevdr.noteappmvvm.utils.DB_TYPE
+import ru.silantevdr.noteappmvvm.utils.TYPE_FIREBASE
+import ru.silantevdr.noteappmvvm.utils.TYPE_ROOM
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteScreen(navController: NavHostController, viewModel: MainViewModel, noteId: String?) {
     val notes = viewModel.readAllNotes().observeAsState().value
-    val note = notes?.firstOrNull{ it.id == noteId?.toInt() } ?: Note(title = NONE, subtitle = NONE)
+    val note = when(DB_TYPE) {
+        TYPE_ROOM -> {
+            notes?.firstOrNull { it.id == noteId?.toInt() } ?: Note()
+        }
+        TYPE_FIREBASE -> {
+            notes?.firstOrNull { it.firebaseId == noteId } ?: Note()
+        }
+        else -> Note()
+    }
     val bottomSheetState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
     var title by remember {
@@ -81,7 +92,7 @@ fun NoteScreen(navController: NavHostController, viewModel: MainViewModel, noteI
                         modifier = Modifier.padding(top = 16.dp),
                         onClick = {
                             viewModel.updateNote(note =
-                                Note(id = note.id, title = title, subtitle = subtitle)
+                                Note(id = note.id, title = title, subtitle = subtitle, firebaseId = note.firebaseId)
                             ) {
                                 navController.navigate(NavRoute.Main.route)
                             }

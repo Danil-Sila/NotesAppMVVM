@@ -28,6 +28,10 @@ import ru.silantevdr.noteappmvvm.MainViewModelFactory
 import ru.silantevdr.noteappmvvm.model.Note
 import ru.silantevdr.noteappmvvm.navigation.NavRoute
 import ru.silantevdr.noteappmvvm.ui.theme.NoteAppMVVMTheme
+import ru.silantevdr.noteappmvvm.utils.Constants.Keys.EMPTY
+import ru.silantevdr.noteappmvvm.utils.DB_TYPE
+import ru.silantevdr.noteappmvvm.utils.TYPE_FIREBASE
+import ru.silantevdr.noteappmvvm.utils.TYPE_ROOM
 
 @Composable
 fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
@@ -57,12 +61,17 @@ fun MainScreen(navController: NavHostController, viewModel: MainViewModel) {
 
 @Composable
 fun NoteItem(note: Note, navController: NavHostController) {
+    val noteId = when(DB_TYPE) {
+        TYPE_FIREBASE -> note.firebaseId
+        TYPE_ROOM -> note.id
+        else -> EMPTY
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp, horizontal = 24.dp)
             .clickable {
-                navController.navigate(NavRoute.Note.route + "/${note.id}")
+                navController.navigate(NavRoute.Note.route + "/${noteId}")
             },
         elevation = 6.dp
     ) {
