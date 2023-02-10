@@ -1,21 +1,38 @@
 package ru.silantevdr.noteappmvvm.database.firebase
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import ru.silantevdr.noteappmvvm.database.DatabaseRepository
 import ru.silantevdr.noteappmvvm.model.Note
+import ru.silantevdr.noteappmvvm.utils.Constants.Keys.SUBTITLE
+import ru.silantevdr.noteappmvvm.utils.Constants.Keys.TITLE
+import ru.silantevdr.noteappmvvm.utils.FIREBASE_ID
 import ru.silantevdr.noteappmvvm.utils.LOGIN
 import ru.silantevdr.noteappmvvm.utils.PASSWORD
 
 class AppFirebaseRepository: DatabaseRepository {
 
     private val mAuth = FirebaseAuth.getInstance()
+    private val database = Firebase.database.reference
+        .child(mAuth.currentUser?.uid.toString())
 
-    override val readAll: LiveData<List<Note>>
-        get() = TODO("Not yet implemented")
+    override val readAll: LiveData<List<Note>> = AllNotesLiveData()
 
     override suspend fun create(note: Note, onSuccess: () -> Unit) {
-        TODO("Not yet implemented")
+        val noteId = database.push().key.toString()
+        val mapNotes = hashMapOf<String, Any>()
+
+        mapNotes[FIREBASE_ID] = noteId
+        mapNotes[TITLE] = note.title
+        mapNotes[SUBTITLE] = note.subtitle
+
+        database.child(noteId)
+            .updateChildren(mapNotes)
+            .addOnSuccessListener { onSuccess() }
+            .addOnFailureListener { Log.d("checkData", "Failed to add new note") }
     }
 
     override suspend fun update(note: Note, onSuccess: () -> Unit) {
