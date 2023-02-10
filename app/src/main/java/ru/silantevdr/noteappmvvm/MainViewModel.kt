@@ -9,6 +9,8 @@ import ru.silantevdr.noteappmvvm.database.firebase.AppFirebaseRepository
 import ru.silantevdr.noteappmvvm.database.room.AppRoomDatabase
 import ru.silantevdr.noteappmvvm.database.room.repository.RoomRepository
 import ru.silantevdr.noteappmvvm.model.Note
+import ru.silantevdr.noteappmvvm.utils.Constants.Keys.EMPTY
+import ru.silantevdr.noteappmvvm.utils.DB_TYPE
 import ru.silantevdr.noteappmvvm.utils.REPOSITORY
 import ru.silantevdr.noteappmvvm.utils.TYPE_FIREBASE
 import ru.silantevdr.noteappmvvm.utils.TYPE_ROOM
@@ -64,6 +66,18 @@ class MainViewModel(application: Application): AndroidViewModel(application) {
                     onSuccess()
                 }
             }
+        }
+    }
+
+    fun signOut(onSuccess: () -> Unit) {
+        when(DB_TYPE.value) {
+            TYPE_FIREBASE,
+            TYPE_ROOM -> {
+                REPOSITORY.signOut()
+                DB_TYPE.value = EMPTY
+                onSuccess()
+            }
+            else -> { Log.d("checkData", "signOut: ELSE: ${DB_TYPE}")}
         }
     }
 
